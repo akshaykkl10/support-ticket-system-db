@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-import { addTickets, listTickets, showTicketById,  updateStatus } from "../ticketService/ticketService.js";
+import { addTickets, deleteFunc, listTickets, showTicketById,  updateStatus } from "../ticketService/ticketService.js";
 import type { Ticket, TicketPriority, TicketStatus } from "../types/types.js";
-import { saveTicket } from "../ticketRepo/ticketRepo.js";
 
 const validPriorities: TicketPriority[] = ["low", "medium", "high"];
 
@@ -72,6 +71,7 @@ export async function deleteTicket(req: Request, res: Response): Promise<void> {
     if(!ticket){
         res.status(404).json({error: "Ticket not found."})
     }
+    deleteFunc(id as string)
     res.status(204).end()
 
 }

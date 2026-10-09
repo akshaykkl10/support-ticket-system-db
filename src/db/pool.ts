@@ -37,10 +37,11 @@ export async function updateDBStatus(id: string, status: TicketStatus){
     [status, id])
     return result.rows
 }
-export async function deleteCommand(id: string){
+export async function deleteTicket(id: string){
     const result = await client.query(`DELETE FROM ticket
         WHERE id = $1`,
     [id])
+    console.log(result)
     return result.rows
 }
 
