@@ -1,10 +1,13 @@
 export type TicketStatus = "open" | "closed"
 export type TicketPriority = "low" | "medium" | "high"
 export interface Ticket {
-    id: string
+    id?: number
+    customer_id: number
+    category_id: number
     title: string
     description: string
     priority: TicketPriority
     status: TicketStatus
-    assignee: string
+    createdat?: string
+    updateat?: string
 }

@@ -4,7 +4,6 @@ import { Server } from "node:http";
 import { Ticket } from "../src/types/types.js";
 import { writeFileSync } from "node:fs";
 import { setTimeout } from "node:timers/promises";
-import { error } from "node:console";
 
 
 const TICKET_FILE = "tickets.json"
@@ -168,14 +167,15 @@ describe("Ticket Controllers", () => {
                 "status": "closed"
             })
         });
-        expect(await updateResponse.json()).toStrictEqual({
+        const updatedTicketResponse = await fetch(`${baseUrl}/tickets/?id=${ticket.id}`)
+        expect(await updatedTicketResponse.json()).toStrictEqual([{
             id:ticket.id,
             title: ticket.title,
             description: ticket.description,
             status: "closed",
             priority: ticket.priority,
             assignee: ticket.assignee
-        })
+        }])
 
     })
     it("shows tickets with open status", async () => {

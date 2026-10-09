@@ -1,41 +1,41 @@
-import { randomUUID } from "node:crypto";
-import { loadTickets, saveTicket } from "../ticketRepo/ticketRepo.js";
 import { Ticket, TicketPriority, TicketStatus } from "../types/types.js";
+import { insertTicket, selectTicketById, selectTickets, updateDBStatus } from "../db/pool.js";
 
 export async function listTickets(): Promise<Ticket[]> {
-    return await loadTickets()
+    return await selectTickets()
 }
 
-export async function addTickets(title: string, description: string, priority: TicketPriority, status: TicketStatus, assignee: string): Promise<Ticket> {
-    const tickets = await listTickets()
+export async function addTickets(customer_id:number, category_id: number, title: string, description: string, priority: TicketPriority, status: TicketStatus): Promise<Ticket> {
     const ticket: Ticket = {
-        id: randomUUID(),
-        title:title,
-        description: description,
-        priority: priority,
-        status: status,
-        assignee: assignee
+        customer_id,
+        category_id,
+        title,
+        description,
+        priority,
+        status
     }
-    tickets.push(ticket)
-    await saveTicket(tickets)
+    await insertTicket(ticket)
     return ticket
 }
 
 export async function updateStatus(id: string, status:TicketStatus) {
-    const ticket = await showTicketById(id)
-    if(ticket) ticket.status = status
+    const ticket = await selectTicketById(id)
+    updateDBStatus(id, status)    
+    
 }
 
-export async function updateAssignee(id: string, assignee:string) {
-    const ticket = await showTicketById(id)
-    if(ticket) ticket.assignee = assignee
-    return
-}
+// export async function updateAssignee(id: string, assignee:string) {
+//     const tickets = await listTickets()
+//     tickets.map(ticket => {
+//         if(ticket.id == id){
+//             ticket.assignee = assignee
+//         }
+//         return ticket
+//     });
+//     saveTicket(tickets)
+//     return tickets.find(ticket => ticket.id == id)
+// }
 
 export async function showTicketById(id:string) {
-    const tickets = await listTickets();
-    const ticket = tickets.find(ticket => ticket.id == id)
-    if(ticket){
-        return ticket;
-    }
+    return await selectTicketById(id);
 }
