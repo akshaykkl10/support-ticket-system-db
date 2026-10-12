@@ -2,7 +2,7 @@ import { Client, Pool } from "pg";
 import { DATABASE_HOST, DATABASE_NAME, DATABASE_PASSWORD, DATABASE_PORT, DATABASE_USER } from "../utils/env.js";
 import { Ticket, TicketStatus } from "../types/types.js";
 
-const client: Pool = new Pool({
+export const client: Pool = new Pool({
     host: DATABASE_HOST,
     port:DATABASE_PORT,
     database: DATABASE_NAME,
@@ -21,7 +21,7 @@ export async function selectTicketById(id: string){
     const result = await client.query(`SELECT * FROM ticket WHERE id = $1;`,
         [id]
     )
-    return result.rows
+    return result.rows as Ticket[]
 }
 export async function insertTicket(ticket: Ticket){
     const result = await client.query(`INSERT INTO ticket (customer_id, category_id, title, description, priority, status)

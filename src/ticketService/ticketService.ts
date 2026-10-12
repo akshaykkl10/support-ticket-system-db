@@ -20,7 +20,7 @@ export async function addTickets(customer_id:number, category_id: number, title:
 
 export async function updateStatus(id: string, status:TicketStatus) {
     const ticket = await selectTicketById(id)
-    updateDBStatus(id, status)
+    return updateDBStatus(id, status)
     
 }
 

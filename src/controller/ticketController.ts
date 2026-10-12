@@ -51,16 +51,6 @@ export async function updateTicket(req: Request, res: Response): Promise<void> {
             updateStatus(String(id), status)
     }
 
-    // if("assignee" in body && body["assignee"] != undefined){
-    //     const assignee = body["assignee"]
-    //     updateAssignee(String(id), assignee)
-    //     tickets.map(ticket => {
-    //         if(ticket.id == id){
-    //             ticket.assignee = body["assignee"]
-    //         }
-    //         return ticket
-    //     });
-    // }
     res.status(201).json(await showTicketById(id as string))
     
 }
